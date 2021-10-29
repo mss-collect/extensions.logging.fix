@@ -1,0 +1,45 @@
+name: .Net Core & Docker
+# v1.0.0 (23.10.2021) GitHub Packages, NuGet and Core 5.0 template - no customizings needed!
+# v1.0.1 (25.10.2021) fixed missing generalization in nupkg file filter name.
+on:
+  push:
+    branches:
+      - "**"
+env:
+  DOTNET_CLI_TELEMETRY_OPTOUT: 1
+  DOTNET_NOLOGO: 1
+  OUTFOLDERPATH: /home/runner/work/buildoutput
+  DOTNET_VERBOSITY: minimal
+
+jobs:
+  build:
+    name: build, test and NuGetize
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout sourcecode
+        uses: actions/checkout@v2
+
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.*
+          source-url: https://nuget.pkg.github.com/mss-collect/index.json
+        env:
+          NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          
+      - name: Install Nuget packages
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --configuration Release --verbosity ${DOTNET_VERBOSITY} -o ${OUTFOLDERPATH}
+      
+      - name: Test
+        run: dotnet test --configuration Release --verbosity ${DOTNET_VERBOSITY} --logger GitHubActions -o ${OUTFOLDERPATH}
+
+      - name: Pack
+        run: dotnet pack --configuration Release --verbosity ${DOTNET_VERBOSITY} -o ${OUTFOLDERPATH}
+
+      - name: Push (NuGet)
+        if: (startsWith(github.ref, 'refs/heads/master') || startsWith(github.ref, 'refs/heads/release/') )
+        run: dotnet nuget push ${OUTFOLDERPATH}/*.nupkg --api-key ${{secrets.GITHUB_TOKEN}}
