@@ -1,6 +1,7 @@
 name: .Net Core & Docker
 # v1.0.0 (23.10.2021) GitHub Packages, NuGet and Core 5.0 template - no customizings needed!
 # v1.0.1 (25.10.2021) fixed missing generalization in nupkg file filter name.
+# v1.1.0 (27.09.2022) net5 => net6, action update (checkout and dotnet)
 on:
   push:
     branches:
@@ -18,12 +19,12 @@ jobs:
 
     steps:
       - name: Checkout sourcecode
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup .NET Core
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v2
         with:
-          dotnet-version: 5.0.*
+          dotnet-version: 6.0.*
           source-url: https://nuget.pkg.github.com/mss-collect/index.json
         env:
           NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
