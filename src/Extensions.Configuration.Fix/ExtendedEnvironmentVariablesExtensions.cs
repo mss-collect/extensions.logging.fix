@@ -19,7 +19,7 @@ namespace Microsoft.Extensions.Configuration
             if (normalizeKeyDelegate == null) throw new ArgumentNullException(nameof(normalizeKeyDelegate));
             hostBuilder.ConfigureAppConfiguration(app =>
             {
-                if (app.Sources.Where(s => s is EnvironmentVariablesConfigurationSource).SingleOrDefault() is EnvironmentVariablesConfigurationSource finding)
+                if (app.Sources.SingleOrDefault(s => s is EnvironmentVariablesConfigurationSource) is EnvironmentVariablesConfigurationSource finding)
                 {
                     int oldIndex = app.Sources.IndexOf(finding);
                     //replace on the same position in the list (ordering is important)
