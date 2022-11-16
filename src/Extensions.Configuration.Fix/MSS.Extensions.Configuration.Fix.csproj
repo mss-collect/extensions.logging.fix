@@ -13,6 +13,23 @@
     <NoWarn>CS1591;CS1572;CS1573</NoWarn>
   </PropertyGroup>
 
+  <PropertyGroup Label="NuSpec">
+    <Authors>Werner Mairl</Authors>
+    <Company>MSS</Company>
+    <Product>Fix for a bug inside Microsoft logging extension (.Net 6 and .Net 7)</Product>
+    <PackageTags>Extensions</PackageTags>
+    <Description>
+      Ensure that the following Extension Method is called!
+
+      Namespace: Microsoft.Extensions.Configuration
+
+      ```csharp
+      public static IWebHostBuilder ConfigureConfigurationFix(this IWebHostBuilder hostBuilder)
+      ```
+    </Description>
+  </PropertyGroup>
+
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>TRACE;ASSERT</DefineConstants>
   </PropertyGroup>
@@ -22,11 +39,11 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.3.44">
+    <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.4.27">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Roslynator.Analyzers" Version="4.1.1">
+    <PackageReference Include="Roslynator.Analyzers" Version="4.1.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

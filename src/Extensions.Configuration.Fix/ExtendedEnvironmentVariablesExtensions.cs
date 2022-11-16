@@ -40,13 +40,15 @@ namespace Microsoft.Extensions.Configuration
 
         public static IConfigurationBuilder ConfigureConfigurationFix(this IConfigurationBuilder configurationBuilder, Func<string, string> normalizeKeyDelegate)
         {
-            if (configurationBuilder.Sources.SingleOrDefault(s => s is EnvironmentVariablesConfigurationSource) is EnvironmentVariablesConfigurationSource finding)
+            var sources = configurationBuilder.Sources.OfType<EnvironmentVariablesConfigurationSource>().ToArray();
+            foreach (EnvironmentVariablesConfigurationSource finding in sources)
             {
                 int oldIndex = configurationBuilder.Sources.IndexOf(finding);
                 //replace on the same position in the list (ordering is important)
                 var newSource = new ExtendedEnvironmentVariablesConfigurationSource
                 {
-                    NormalizeKeyCallback = normalizeKeyDelegate
+                    NormalizeKeyCallback = normalizeKeyDelegate,
+                    Prefix = finding.Prefix
                 };
                 configurationBuilder.Sources[oldIndex] = newSource;
             }
